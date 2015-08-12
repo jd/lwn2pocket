@@ -11,7 +11,7 @@ import requests
 logging.basicConfig()
 LOG = logging.getLogger(__name__)
 
-DEBUG = True
+DEBUG = False
 POCKET_CONSUMER_KEY = "44549-fa6a1b90e0b637237765ba8a"
 
 
