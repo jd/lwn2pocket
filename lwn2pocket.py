@@ -76,10 +76,11 @@ def main():
     already_in_pocket = p.get(domain="lwn.net", detailType="simple",
                               state="all")
     articles_already_pushed = set()
-    for entry_id, entry in already_in_pocket[0]['list'].items():
-        m = RE_SUBSCRIBER_LINK.match(entry['given_url'])
-        if m:
-            articles_already_pushed.add(m.group(1))
+    if already_in_pocket[0]['list']:
+        for entry_id, entry in already_in_pocket[0]['list'].items():
+            m = RE_SUBSCRIBER_LINK.match(entry['given_url'])
+            if m:
+                articles_already_pushed.add(m.group(1))
 
     for line in bigpage.text.split("\n"):
         m = RE_SUBSCRIBER_LINK_FORM.search(line)
