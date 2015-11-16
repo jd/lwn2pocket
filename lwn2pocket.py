@@ -42,32 +42,16 @@ def get_login_cookies():
                          data={"Username": username,
                                "Password": password}).cookies
 
-RE_WEEKLY = re.compile(
-    "<a href=\"(.+)\">LWN.net Weekly Edition for .+</a></p>")
-RE_LOGGED = re.compile(
-    "<p class=\"Header\">Logged in as (.+)</p>")
 RE_SUBSCRIBER_LINK_FORM = re.compile(
     "<input type=\"hidden\" name=\"articleid\" value=\"(\d+)\">")
 
 RE_SUBSCRIBER_LINK = re.compile("http://lwn.net/SubscriberLink/(\d+)/.+/")
 
+
 def main():
     cookies = get_login_cookies()
-    frontpage = requests.get("https://lwn.net", cookies=cookies)
 
-    for line in frontpage.text.split("\n"):
-        m = RE_LOGGED.search(line)
-        if m:
-            LOG.debug("Logged in as %s" % m.group(1))
-            continue
-        m = RE_WEEKLY.search(line)
-        if m:
-            url = m.group(1)
-            break
-    else:
-        raise Exception("LWN weekly page URL not found")
-
-    bigpage = requests.get("https://lwn.net" + url + "bigpage",
+    bigpage = requests.get("https://lwn.net/current/bigpage",
                            cookies=cookies)
 
     _, access_token = get_login_password("pocket.com")
