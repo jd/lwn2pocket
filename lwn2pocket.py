@@ -76,7 +76,7 @@ def main():
                                  data={"articleid": articleid},
                                  cookies=cookies)
             RE_SUBLINK = re.compile(
-                "<a href=\"(http://lwn.net/SubscriberLink/%s/.+)\">"
+                "<a href=\"(https://lwn.net/SubscriberLink/%s/.+)\">"
                 % articleid)
             for line in link.text.split("\n"):
                 m = RE_SUBLINK.search(line)
