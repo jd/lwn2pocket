@@ -46,7 +46,7 @@ def get_login_cookies():
 RE_SUBSCRIBER_LINK_FORM = re.compile(
     "<input type=\"hidden\" name=\"articleid\" value=\"(\d+)\">")
 
-RE_SUBSCRIBER_LINK = re.compile("http://lwn.net/SubscriberLink/(\d+)/.+/")
+RE_SUBSCRIBER_LINK = re.compile("https://lwn.net/SubscriberLink/(\d+)/.+/")
 
 
 def main():
