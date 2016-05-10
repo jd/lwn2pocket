@@ -3,6 +3,7 @@ import logging
 import netrc
 import os
 import re
+import sys
 
 import pocket
 import requests
@@ -11,7 +12,7 @@ import requests
 logging.basicConfig()
 LOG = logging.getLogger(__name__)
 
-DEBUG = False
+DEBUG = len(sys.argv) >= 2 and sys.argv[1] == '--debug'
 POCKET_CONSUMER_KEY = "44549-fa6a1b90e0b637237765ba8a"
 
 
