@@ -18,5 +18,3 @@ user_credentials = pocket.Pocket.get_credentials(
 access_token = user_credentials['access_token']
 
 print("Access granted! Your token is: %s" % access_token)
-print("Add this line to your ~/.netrc file:")
-print("machine pocket.com login youremail password %s" % access_token)

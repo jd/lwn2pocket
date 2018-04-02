@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import logging
-import netrc
 import os
 import re
 import sys
@@ -29,20 +28,6 @@ if DEBUG:
     requests_log.propagate = True
 
 
-def get_login_password(site_name="lwn.net", netrc_file="~/.netrc"):
-    """Read a .netrc file and return login/password for LWN."""
-    n = netrc.netrc(os.path.expanduser(netrc_file))
-    return n.hosts[site_name][0], n.hosts[site_name][2]
-
-
-def get_login_cookies():
-    """Login into LWN.net and returns the cookies."""
-    username, password = get_login_password()
-    return requests.post("https://lwn.net/login",
-                         allow_redirects=False,
-                         data={"Username": username,
-                               "Password": password}).cookies
-
 RE_SUBSCRIBER_LINK_FORM = re.compile(
     "<input type=\"hidden\" name=\"articleid\" value=\"(\d+)\">")
 
@@ -50,12 +35,16 @@ RE_SUBSCRIBER_LINK = re.compile("https://lwn.net/SubscriberLink/(\d+)/.+/")
 
 
 def main():
-    cookies = get_login_cookies()
+    cookies = requests.post(
+        "https://lwn.net/login",
+        allow_redirects=False,
+        data={"Username": os.getenv("LWNNET_USERNAME"),
+              "Password": os.getenv("LWNNET_PASSWORD")}).cookies
 
     bigpage = requests.get("https://lwn.net/current/bigpage",
                            cookies=cookies)
 
-    _, access_token = get_login_password("pocket.com")
+    access_token = os.getenv("POCKET_ACCESS_TOKEN")
     p = pocket.Pocket(POCKET_CONSUMER_KEY, access_token)
 
     already_in_pocket = p.get(domain="lwn.net", detailType="simple",
