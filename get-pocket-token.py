@@ -10,7 +10,7 @@ auth_url = pocket.Pocket.get_auth_url(
     redirect_uri="http://localhost:8080/")
 
 print("Go to %s and press enter" % auth_url)
-raw_input()
+input()
 
 user_credentials = pocket.Pocket.get_credentials(
     consumer_key=lwn2pocket.POCKET_CONSUMER_KEY,
