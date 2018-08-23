@@ -35,14 +35,13 @@ RE_SUBSCRIBER_LINK = re.compile("https://lwn.net/SubscriberLink/(\d+)/.+/")
 
 
 def main():
-    cookies = requests.post(
-        "https://lwn.net/login",
-        allow_redirects=False,
+    session = requests.Session()
+    session.post(
+        "https://lwn.net/Login/",
         data={"Username": os.getenv("LWNNET_USERNAME"),
               "Password": os.getenv("LWNNET_PASSWORD")}).cookies
 
-    bigpage = requests.get("https://lwn.net/current/bigpage",
-                           cookies=cookies)
+    bigpage = session.get("https://lwn.net/current/bigpage")
 
     access_token = os.getenv("POCKET_ACCESS_TOKEN")
     p = pocket.Pocket(POCKET_CONSUMER_KEY, access_token)
@@ -62,9 +61,8 @@ def main():
             articleid = m.group(1)
             if articleid in articles_already_pushed:
                 continue
-            link = requests.post("https://lwn.net/SubscriberLink/MakeLink",
-                                 data={"articleid": articleid},
-                                 cookies=cookies)
+            link = session.post("https://lwn.net/SubscriberLink/MakeLink",
+                                data={"articleid": articleid})
             RE_SUBLINK = re.compile(
                 "<a href=\"(https://lwn.net/SubscriberLink/%s/.+)\">"
                 % articleid)
