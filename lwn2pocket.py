@@ -29,7 +29,8 @@ if DEBUG:
 
 
 RE_SUBSCRIBER_LINK_FORM = re.compile(
-    "<input type=\"hidden\" name=\"articleid\" value=\"(\d+)\">")
+    "<a href=\"/Articles/(\d+)/#Comments\">"
+)
 
 RE_SUBSCRIBER_LINK = re.compile("https://lwn.net/SubscriberLink/(\d+)/.+/")
 
